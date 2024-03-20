@@ -1,10 +1,6 @@
 -- Creates a table called users.
-CREATE DATABASE IF NOT EXISTS holberton;
-
-USE holberton;
-
 CREATE TABLE IF NOT EXISTS users (
 	id INT AUTO_INCREAMENT PRIMARY KEY,
 	email VARCHAR(255) NOT NULL UNIQUE,
 	name VARCHAR(255)
-)
+);
