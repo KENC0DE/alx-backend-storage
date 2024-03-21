@@ -1,7 +1,9 @@
 -- creates a stored procedure ComputeAverageScoreForUser
 DELIMITER //
 
-CREATE PROCEDURE ComputeAverageScoreForUser(IN user_id INT)
+CREATE PROCEDURE ComputeAverageScoreForUser(
+	IN user_id INT
+)
 BEGIN
 	DECLARE avg_score FLOAT;
 
