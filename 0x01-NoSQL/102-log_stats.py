@@ -1,45 +1,43 @@
 #!/usr/bin/env python3
-"""MongoDB Operations with Python using pymongo"""
-from pymongo import MongoClient
+"""
+NoSQL -Python
+"""
 
-if __name__ == "__main__":
-    """ Provides some stats about Nginx logs stored in MongoDB """
+
+if __name__ == '__main__':
+    from pymongo import MongoClient
+
     client = MongoClient('mongodb://127.0.0.1:27017')
-    nginx_collection = client.logs.nginx
+    nginx = client.logs.nginx
 
-    n_logs = nginx_collection.count_documents({})
-    print(f'{n_logs} logs')
+    print(nginx.count_documents({}), 'logs')
 
-    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
     print('Methods:')
-    for method in methods:
-        count = nginx_collection.count_documents({"method": method})
-        print(f'    method {method}: {count}')
 
-    status_check = nginx_collection.count_documents(
-        {"method": "GET", "path": "/status"}
-    )
+    methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
 
-    print(f'{status_check} status check')
+    for meth in methods:
+        counted = nginx.count_documents({'method': meth})
+        print('\tmethod {}: {}'.format(meth, counted))
 
-    top_ips = nginx_collection.aggregate([
-        {"$group":
+    status_check_count = nginx.count_documents({'method': 'GET',
+                                                'path': '/status'})
+    print('{} status check'.format(status_check_count))
+
+    print('IPs:')
+    pipeline = [
+        {'$group':
             {
-                "_id": "$ip",
-                "count": {"$sum": 1}
+                '_id': '$ip',
+                'count': {'$sum': 1}
             }
          },
-        {"$sort": {"count": -1}},
-        {"$limit": 10},
-        {"$project": {
-            "_id": 0,
-            "ip": "$_id",
-            "count": 1
-        }}
-    ])
+        {'$sort':
+            {'count': -1}
+         },
+        {'$limit': 10}
+    ]
+    ip_count = nginx.aggregate(pipeline)
 
-    print("IPs:")
-    for top_ip in top_ips:
-        ip = top_ip.get("ip")
-        count = top_ip.get("count")
-        print(f'    {ip}: {count}')
+    for ip in ip_count:
+        print(f'\t{ip.get("_id")}: {ip.get("count")}')
