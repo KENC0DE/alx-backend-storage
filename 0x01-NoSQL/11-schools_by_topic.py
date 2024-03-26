@@ -8,4 +8,4 @@ def schools_by_topic(mongoc, topic):
     """
     Find schools having specific topic
     """
-    return mongoc.find({"topic": topic})
+    return list(mongoc.find({"topic": topic}))
