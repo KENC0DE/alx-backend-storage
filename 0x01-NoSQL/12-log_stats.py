@@ -1,27 +1,29 @@
 #!/usr/bin/env python3
-"""Log stats module"""
-from pymongo import MongoClient
+"""
+NoSQL -Python
+"""
+if __name__ == '__main__':
+    from pymongo import MongoClient
 
-
-if __name__ == "__main__":
     client = MongoClient('mongodb://127.0.0.1:27017')
-    db = client.logs.nginx
+    db = client['logs']
+    coll = db['nginx']
 
-    num_logs = db.count_documents({})
-    print(f"{num_logs} logs")
+    total_count = coll.count_documents({})
+    get_count = coll.count_documents({"method": "GET"})
+    post_count = coll.count_documents({"method": "POST"})
+    put_count = coll.count_documents({"method": "PUT"})
+    patch_count = coll.count_documents({"method": "PATCH"})
+    delete_count = coll.count_documents({"method": "DELETE"})
+    get_status = coll.count_documents({"method": "GET", "path": "/status"})
 
-    get = db.count_documents({'method': 'GET'})
-    post = db.count_documents({'method': 'POST'})
-    put = db.count_documents({'method': 'PUT'})
-    patch = db.count_documents({'method': 'PATCH'})
-    delete = db.count_documents({'method': 'DELETE'})
+    message = f"""{total_count} logs
+Methods:
+    method GET: {get_count}
+    method POST: {post_count}
+    method PUT: {put_count}
+    method PATCH: {patch_count}
+    method DELETE: {delete_count}
+{get_status} status check"""
 
-    print("Methods:")
-    print(f"\tmethod GET: {get}")
-    print(f"\tmethod POST: {post}")
-    print(f"\tmethod PUT: {put}")
-    print(f"\tmethod PATCH: {patch}")
-    print(f"\tmethod DELETE: {delete}")
-
-    status = db.count_documents({'method': 'GET', 'path': '/status'})
-    print(f"{status} status check")
+    print(message)
