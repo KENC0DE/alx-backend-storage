@@ -14,7 +14,7 @@ if __name__ == "__main__":
     print('Methods:')
     for method in methods:
         count = nginx_collection.count_documents({"method": method})
-        print(f'\tmethod {method}: {count}')
+        print(f'    method {method}: {count}')
 
     status_check = nginx_collection.count_documents(
         {"method": "GET", "path": "/status"}
@@ -42,4 +42,4 @@ if __name__ == "__main__":
     for top_ip in top_ips:
         ip = top_ip.get("ip")
         count = top_ip.get("count")
-        print(f'\t{ip}: {count}')
+        print(f'    {ip}: {count}')
