@@ -18,12 +18,12 @@ if __name__ == '__main__':
     get_status = coll.count_documents({"method": "GET", "path": "/status"})
 
     message = f"""{total_count} logs
-    Methods:
-        method GET: {get_count}
-        method POST: {post_count}
-        method PUT: {put_count}
-        method PATCH: {patch_count}
-        method DELETE: {delete_count}
-    {get_status} status check"""
+Methods:
+    method GET: {get_count}
+    method POST: {post_count}
+    method PUT: {put_count}
+    method PATCH: {patch_count}
+    method DELETE: {delete_count}
+{get_status} status check"""
 
     print(message)
