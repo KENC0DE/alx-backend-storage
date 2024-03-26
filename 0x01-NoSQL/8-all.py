@@ -3,6 +3,7 @@
 NoSQL
 """
 
+
 def list_all(mongo_collection):
     """
     Return all document in passed collection.
